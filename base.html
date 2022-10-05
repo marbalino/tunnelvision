@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+
+<!DOCTYPE html>
+
+
+
+<html>
+
+
+<head>
+
+
+
+<title>Marbles LAbz Technology </title>
+
+<style>
+body {
+    font-family: 'Brush Script MT', cursive;
+}
+</style>
+
+</head>
+
+
+<body style="background-color:saddlebrown">
+
+<br>
+<h1><center>Tunnel Vision</center></h1>
+<br>
+
+
+<meta charset="utf-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<p>
+
+
+<center> <iframe src="http://136.25.73.194:5000/"  width= 700vw height= 500vw align="center"></iframe></center>
+
+
+
+</p>
+
+    <style>
+
+
+
+  * {
+
+
+
+        margin: 0;
+
+
+
+        padding: 0;
+
+
+
+        font-family: 'Brush Script MT', cursive;
+
+
+
+      }
+
+
+
+      .chartMenu {
+
+
+
+        width: 100vw;
+
+
+
+        height: 40px;
+
+
+
+        background: 
+
+
+
+        color: rgba(255, 26, 104, 1);
+
+
+
+      }
+
+
+
+      .chartMenu p {
+
+
+
+        padding: 10px;
+
+
+
+        font-size: 20px;
+
+
+
+      }
+
+
+
+      .chartCard {
+
+
+
+        width: 100vw;
+
+
+
+        height: calc(20vh);
+
+
+
+        background: rgba(255, 26, 104, 0.2);
+
+
+
+       display: flex;       
+
+
+
+      }
+
+
+
+      .chartBox {
+
+
+
+        width: calc(162vw);
+
+
+
+	//height: calc(30vh);
+
+	
+
+	align-items: center;
+
+       
+
+
+
+
+
+        
+
+
+
+        padding: 20px;
+
+
+
+        border-radius: 20px;
+
+
+
+        border: solid 3px rgba(255, 26, 104, 1);
+
+
+
+        background: silver;
+
+
+
+      }
+
+
+
+    </style>
+
+
+
+  </head>
+
+
+
+  <body>
+
+
+
+
+
+
+
+    <div class="chartMenu">
+
+
+
+    </div>
+
+
+
+     
+
+
+
+      <div class="chartBox">
+
+
+
+        <canvas id="myChart"></canvas>
+
+
+
+      </div>
+
+
+
+<div class="chartBox">
+
+
+
+        <canvas id="myChartco2"></canvas>
+
+
+
+      </div>
+
+
+
+<div class="chartBox">
+
+
+
+        <canvas id="myCharttvoc"></canvas>
+
+
+
+      </div>
+
+
+
+<div class="chartBox">
+
+
+
+        <canvas id="myChartpressure"></canvas>
+
+
+
+      </div>
+
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+
+
+<script>
+
+
+
+const chartData= 'http://136.25.73.194:8080/testlog1.csv';
+
+
+
+
+
+  //parse from csv to json
+
+
+
+  d3.csv(chartData).then(function(datapoints){
+    console.log(datapoints)
+
+
+    const temp= [];
+
+
+
+    const co2= [];
+
+
+
+    const tvoc= [];
+
+
+
+    const pressure= [];
+
+
+
+    const time= [];
+
+
+
+     for (i= 0; i < datapoints.length; i++) {
+
+
+
+      temp.push(datapoints[i].temp)
+
+      tvoc.push(datapoints[i].tvoc)
+
+
+
+      co2.push(datapoints[i].co2)
+
+
+
+      time.push(datapoints[i].time)  
+
+
+
+      pressure.push(datapoints[i].pressure)
+
+
+
+      console.log();
+
+
+
+}
+
+
+
+ console.log
+
+
+
+
+
+
+
+// setup 
+
+
+
+    const data = {
+
+
+
+      labels: time,
+
+
+
+      datasets: [{
+
+
+
+        label: 'temp over time',
+
+
+
+        data: temp,
+
+
+
+        backgroundColor: [
+
+
+
+          
+
+
+
+          'rgba(255, 159, 64, 0.2)'
+
+
+
+         
+
+
+
+        ],
+
+
+
+        borderColor: [
+
+
+
+          'rgba(255, 26, 104, 1)'                 
+
+
+
+        ],
+
+
+
+        tension: .4
+
+
+
+      }]
+
+
+
+    };
+
+
+
+
+
+
+
+    // config 
+
+
+
+    const config = {
+
+
+
+      type: 'line',
+
+
+
+      data,
+
+
+
+      options: {
+
+
+
+        scales: {
+
+
+
+          y: {                      
+
+
+
+          }
+
+
+
+	  
+
+
+
+        }
+
+
+
+      }
+
+
+
+    };
+
+
+
+
+
+
+
+    // render init block
+
+
+
+    const myChart = new Chart(
+
+
+
+      document.getElementById('myChart'),
+
+
+
+      config
+
+
+
+    
+
+
+
+);  
+
+
+
+
+
+
+
+ // setup 
+
+
+
+    const dataco2 = {
+
+
+
+      labels: time,
+
+
+
+      datasets: [{
+
+
+
+        label: 'co2 over time',
+
+
+
+        data: co2,
+
+
+
+        backgroundColor: [
+
+
+
+          'rgba(0, 0, 0, 0.2)'
+
+
+
+        ],
+
+
+
+        borderColor: [,
+
+
+
+          'rgba(255, 159, 64, 1)'
+
+
+
+        ],
+
+
+
+        tension: .4
+
+
+
+      }]
+
+
+
+    };
+
+
+
+
+
+
+
+     config 
+
+
+
+    const configco2 = {
+
+
+
+      type: 'line',
+
+
+
+      data: dataco2,
+
+
+
+      options: {
+
+
+
+        scales: {
+
+
+
+          y: {                    
+
+
+
+          }
+
+
+
+	  
+
+
+
+        }
+
+
+
+      }
+
+
+
+    };
+
+
+
+
+
+
+
+     //render init block
+
+
+
+    const myChartco2 = new Chart(
+
+
+
+      document.getElementById('myChartco2'),
+
+
+
+      configco2
+
+
+
+    );
+
+
+
+
+
+
+
+// setup 
+
+
+
+    const datatvoc = {
+
+
+
+      labels: time,
+
+
+
+      datasets: [{
+
+
+
+        label: 'tvoc over time',
+
+
+
+        data:tvoc,
+
+
+
+        backgroundColor: [
+
+
+
+          'rgba(0, 0, 0, 0.2)'
+
+
+
+        ],
+
+
+
+        borderColor: [,
+
+
+
+          'rgba(255, 159, 64, 1)'
+
+
+
+        ],
+
+
+
+        tension: .4
+
+
+
+      }]
+
+
+
+    };
+
+
+
+
+
+
+
+    // config 
+
+
+
+    const configtvoc = {
+
+
+
+      type: 'line',
+
+
+
+      data: datatvoc,
+
+
+
+      options: {
+
+
+
+        scales: {
+
+
+
+          y: {
+
+
+
+            
+
+
+
+          
+
+
+
+          }
+
+
+
+	  
+
+
+
+        }
+
+
+
+      }
+
+
+
+    };
+
+
+
+
+
+
+
+     //render init block
+
+
+
+    const myCharttvoc = new Chart(
+
+
+
+      document.getElementById('myCharttvoc'),
+
+
+
+      configtvoc
+
+
+
+   );
+
+
+
+
+
+
+
+// setup 
+
+
+
+    const datapressure = {
+
+
+
+      labels: time,
+
+
+
+      datasets: [{
+
+
+
+        label: 'pressure over time',
+
+
+
+        data: pressure,
+
+
+
+        backgroundColor: [
+
+
+
+          'rgba(0, 0, 0, 0.2)'
+
+
+
+        ],
+
+
+
+        borderColor: [,
+
+
+
+          'rgba(255, 159, 64, 1)'
+
+
+
+        ],
+
+
+
+        tension: .4
+
+
+
+      }]
+
+
+
+    };
+
+
+
+
+
+
+
+    // config 
+
+
+
+    const configpressure = {
+
+
+
+      type: 'line',
+
+
+
+      data: datapressure,
+
+
+
+      options: {
+
+
+
+        scales: {
+
+
+
+          y: {
+
+
+
+              
+
+
+
+          
+
+
+
+          }
+
+
+
+	  
+
+
+
+        }
+
+
+
+     }
+
+
+
+    };
+
+
+
+
+
+
+
+//     render init block
+
+
+
+    const myChartpressure = new Chart(
+
+
+
+      document.getElementById('myChartpressure'),
+
+
+
+      configpressure
+
+
+
+    );
+
+});
+
+
+
+    </script>
+
+
+<div id="list"><p>
+
+
+</body>   
+
+
+<p style="text-align:center;"> to access the air data as a csv file Text <a href="testlog1.csv">click here</a> </p>
+
+
+
+</em> 
+
+
+<body>
+{% block body %}
+
+{% endblock %}
+
+</body>
+</html>
